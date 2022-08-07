@@ -9,21 +9,30 @@ import UIKit
 import AVFoundation
 
 class ViewController: UIViewController {
-    var player: AVAudioPlayer!
+    var player: AVAudioPlayer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSoundButton()
     }
     
-    @objc func playSound() {
+    func playSound() {
         if let soundPath = Bundle.main.path(forResource: "loop", ofType: "mp3") {
             do {
                 player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: soundPath))
-                player.play()
+                player?.play()
             } catch {
                 print("Sound error")
             }
+        }
+    }
+    
+    @objc func tappedSoundButton() {
+        let isPlaying = player?.isPlaying ?? false
+        if isPlaying  {
+            player!.stop()
+        } else {
+            playSound()
         }
     }
     
@@ -33,7 +42,7 @@ class ViewController: UIViewController {
         button.frame.size = CGSize(width: 50, height: 50)
         button.layer.cornerRadius = 25
         button.backgroundColor = .blue
-        button.addTarget(self, action: #selector(playSound), for: .touchUpInside)
+        button.addTarget(self, action: #selector(tappedSoundButton), for: .touchUpInside)
         view.addSubview(button)
     }
 
