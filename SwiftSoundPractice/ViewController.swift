@@ -20,7 +20,8 @@ class ViewController: UIViewController {
         if let soundPath = Bundle.main.path(forResource: "loop", ofType: "mp3") {
             do {
                 player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: soundPath))
-                player?.play()
+                player!.numberOfLoops = -1 // 負の値を入れることで無限ループ
+                player!.play()
             } catch {
                 print("Sound error")
             }
